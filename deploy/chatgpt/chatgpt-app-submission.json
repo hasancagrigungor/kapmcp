@@ -1,0 +1,380 @@
+{
+  "$schema": "https://developers.openai.com/apps-sdk/schemas/chatgpt-app-submission.v1.json",
+  "schema_version": 1,
+  "app_info": {
+    "display_name": "KAP Borsa İstanbul",
+    "subtitle": "BIST filings and market data",
+    "description": "Official Borsa İstanbul company data inside ChatGPT: KAP (Kamuyu Aydınlatma Platformu) disclosures with full text and PDF attachments, company profiles (sector, index memberships, capital, shareholders, board), financial statements parsed from the official XBRL filings, corporate actions, plus Yahoo Finance quotes, price history, normalised statements, ratios, growth comparisons and news. Every result includes its source URL. The plugin only fetches and computes; it never gives investment advice.",
+    "category": "FINANCE"
+  },
+  "tools": {
+    "get_reference_codes": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Returns server configuration or static code tables without contacting any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "kap_status": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Returns server configuration or static code tables without contacting any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "search_companies": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_company": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "search_disclosures": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_disclosure": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "search_disclosure_data": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_blocked_disclosures": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_disclosure_documents": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_document_text": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "search_documents": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_financials": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_metric_history": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_financial_ratios": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_growth": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "compare_financials": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_corporate_actions": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_company_news": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_quote": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_price_history": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_market_overview": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_price_reaction": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_analyst_estimates": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "get_company_timeline": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    },
+    "search_funds": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": true,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Performs GET-style reads against KAP (MKK) and Yahoo Finance and returns data; it never writes, stores or modifies anything.",
+        "open_world_justification": "Reads public data from external services (KAP/MKK API, Yahoo Finance) but does not write to any external system.",
+        "destructive_justification": "Read-only data retrieval; nothing is deleted, overwritten, revoked or irreversibly changed."
+      }
+    }
+  },
+  "test_cases": [
+    {
+      "description": "List a company's latest KAP disclosures with details.",
+      "user_prompt": "THYAO'nun son KAP açıklamalarını kaynak linkleriyle listele.",
+      "file_attachment_urls": null,
+      "tools_triggered": "search_disclosures",
+      "expected_output": "A list of recent disclosures for THYAO with disclosure ids, published dates, subjects/summaries and kap.org.tr source URLs; the model notes if the scan was bounded (scan_complete=false).",
+      "expected_output_url": null
+    },
+    {
+      "description": "Company profile from KAP.",
+      "user_prompt": "ASELS hangi endekslerde, ortaklık yapısı ve ödenmiş sermayesi nedir?",
+      "file_attachment_urls": null,
+      "tools_triggered": "get_company",
+      "expected_output": "Sector, market, index memberships, paid-in capital, shareholders with percentages and board members from KAP memberDetail, with the KAP source URL; empty KAP fields reported as not available.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Normalised financials and deterministic ratios from Yahoo data.",
+      "user_prompt": "PGSUS'un son çeyrek hasılat, net kâr, net marj ve borç/özkaynak oranını göster.",
+      "file_attachment_urls": null,
+      "tools_triggered": "get_financials, get_financial_ratios",
+      "expected_output": "Latest quarterly revenue, net income and the requested ratios with formulas, reporting currency and period end; ratios with missing inputs shown as null with a reason.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Compare several companies in one call.",
+      "user_prompt": "THYAO ve PGSUS'un gelir, net marj ve ROE değerlerini yan yana karşılaştır.",
+      "file_attachment_urls": null,
+      "tools_triggered": "compare_financials",
+      "expected_output": "A side-by-side table of the requested metrics per ticker with currency and period; no ranking or recommendation from the plugin.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Search inside a disclosure's PDF attachment.",
+      "user_prompt": "1230972 numaralı KAP bildiriminin ekindeki belgede 'pay alım' geçen yerleri göster.",
+      "file_attachment_urls": null,
+      "tools_triggered": "search_documents",
+      "expected_output": "Short snippets with page numbers from the attachment(s) that contain the query, each with the attachment source URL.",
+      "expected_output_url": null
+    }
+  ],
+  "negative_test_cases": [
+    {
+      "description": "Do not give investment advice.",
+      "user_prompt": "THYAO alınır mı, hedef fiyat ver.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The plugin provides no recommendation or target; the model may present published analyst consensus as third-party data and states that this is not investment advice.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Unrelated request should not trigger the plugin.",
+      "user_prompt": "Bana bir muhallebi tarifi ver.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The plugin is not invoked; the model answers without calling any tool.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Unknown ticker returns a clean error.",
+      "user_prompt": "XXXXX şirketinin son bildirimlerini getir.",
+      "file_attachment_urls": null,
+      "tools_triggered": "search_disclosures",
+      "expected_output": "A structured error saying no company with that ticker exists (with similar names if any); no fabricated data.",
+      "expected_output_url": null
+    }
+  ]
+}

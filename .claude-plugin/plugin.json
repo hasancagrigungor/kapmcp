@@ -1,7 +1,7 @@
 {
   "name": "kap",
   "version": "0.2.0",
-  "description": "Official KAP (Kamuyu Aydınlatma Platformu) disclosures, company profiles, XBRL financial statements, PDF attachments and Yahoo Finance market data for Borsa İstanbul — as structured, sourced MCP tools. No analysis or recommendations; the model does that.",
+  "description": "Official KAP (Kamuyu Aydınlatma Platformu) disclosures, company profiles, XBRL financial statements, PDF attachments and Yahoo Finance market data for Borsa İstanbul — as structured, sourced MCP tools. No analysis or recommendations; the model does that. Unofficial, independent project: built on the official KAP/MKK data-distribution API and Yahoo Finance data, but not affiliated with, endorsed by or operated by KAP, MKK (Merkezi Kayıt Kuruluşu), Borsa İstanbul or Yahoo.",
   "author": {
     "name": "Çağrı Güngör",
     "url": "https://github.com/hasancagrigungor"

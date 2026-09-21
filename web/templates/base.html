@@ -7,6 +7,7 @@
 <meta name="description" content="Borsa İstanbul için MCP sunucusu: resmi KAP bildirimleri + Yahoo Finance verisi. Claude, ChatGPT ve Gemini ile kullanılır.">
 {% load static %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
+<link rel="icon" href="{% static 'favicon.png' %}">
 </head>
 <body>
 <header>
@@ -15,6 +16,7 @@
     <a href="/tools/">Araçlar</a>
     <a href="/status/">Durum</a>
     <a href="/privacy/">Gizlilik</a>
+    <a href="/terms/">Koşullar</a>
     <a href="https://github.com/hasancagrigungor/kapmcp">GitHub</a>
   </nav>
 </header>
@@ -22,7 +24,7 @@
 {% block content %}{% endblock %}
 </main>
 <footer>
-  <p>Veri: KAP (MKK VYK API) ve Yahoo Finance. Yatırım tavsiyesi değildir. Kaynak kodu MIT lisanslıdır.</p>
+  <p>Bağımsız, resmî olmayan bir projedir; KAP, MKK, Borsa İstanbul veya Yahoo ile bağı yoktur. Veri: KAP (MKK VYK API) ve Yahoo Finance. Yatırım tavsiyesi değildir. Kaynak kodu MIT lisanslıdır. / Unofficial project, not affiliated with KAP, MKK, Borsa İstanbul or Yahoo.</p>
 </footer>
 </body>
 </html>

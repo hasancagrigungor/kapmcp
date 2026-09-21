@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "kap",
-      "description": "Official KAP disclosures, company profiles, XBRL financials, attachments and Yahoo Finance data for Borsa İstanbul.",
+      "description": "Official KAP disclosures, company profiles, XBRL financials, attachments and Yahoo Finance data for Borsa İstanbul. Unofficial, independent project: built on the official KAP/MKK data-distribution API and Yahoo Finance data, but not affiliated with, endorsed by or operated by KAP, MKK (Merkezi Kayıt Kuruluşu), Borsa İstanbul or Yahoo.",
       "source": "./"
     }
   ],

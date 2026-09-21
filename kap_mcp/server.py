@@ -111,8 +111,8 @@ mcp = MCPServer(
     instructions=(
         "Borsa İstanbul data layer. KAP (official) tools: search_companies, get_company, search_disclosures, get_disclosure, "
         "documents, funds. Yahoo tools (no key needed): quotes, price history, financials, ratios, growth, news. "
-        "Tickers are BIST codes (THYAO); Yahoo symbols get '.IS' automatically. All computations are deterministic; "
-        "interpretation, ranking and charts are yours."
+        "Tickers are BIST codes (THYAO); Yahoo symbols get '.IS' automatically. Computations are deterministic; "
+        "interpretation, ranking and charts are yours. Unofficial project, not affiliated with KAP/MKK/Borsa İstanbul/Yahoo."
     ),
     lifespan=_lifespan,
 )

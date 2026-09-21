@@ -2,6 +2,8 @@
 
 ## Türkçe
 
+> **Resmî değildir.** Resmî olmayan, bağımsız bir projedir: resmî KAP/MKK veri yayın API'si ve Yahoo Finance verileri üzerine kurulmuştur; KAP, MKK (Merkezi Kayıt Kuruluşu), Borsa İstanbul veya Yahoo ile bir bağı yoktur, onlar tarafından onaylanmamış veya işletilmemektedir.
+
 **kapmcp**, Borsa İstanbul için KAP bildirimlerini ve Yahoo Finance piyasa verilerini MCP uyumlu uygulamalara sunan bir Python sunucusudur. Resmî MKK VYK API üzerinden şirket bilgilerini, bildirim içeriklerini, finansal raporları, ek belgeleri ve fon sicilini getirir. Yahoo Finance üzerinden fiyat, geçmiş fiyat, finansal tablo, oran, analist tahmini ve haber verilerine erişim sağlar.
 
 25 salt okunur araç sunar. Verileri yapılandırılmış JSON olarak döndürür; finansal oranları, büyümeyi ve teknik göstergeleri tanımlı formüllerle hesaplar. Yatırım önerisi, sıralama veya fiyat tahmini üretmez. Yerel kullanım için **stdio**, uzak bağlantılar için **Streamable HTTP** destekler.
@@ -106,6 +108,8 @@ claude mcp add --transport http kap https://kapmcp.cagrigungor.com/mcp
 ```
 
 ## English
+
+> **Unofficial.** Unofficial, independent project: built on the official KAP/MKK data-distribution API and Yahoo Finance data, but not affiliated with, endorsed by or operated by KAP, MKK (Merkezi Kayıt Kuruluşu), Borsa İstanbul or Yahoo.
 
 
 [MCP](https://modelcontextprotocol.io) server for **Borsa İstanbul**: official **KAP** disclosures (Kamuyu Aydınlatma

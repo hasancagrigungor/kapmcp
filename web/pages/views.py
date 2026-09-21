@@ -133,3 +133,18 @@ def healthz(request):
 
 def privacy(request):
     return render(request, "privacy.html")
+
+
+def terms(request):
+    return render(request, "terms.html")
+
+
+def openai_challenge(request):
+    """Domain-verification token for the ChatGPT plugin directory (set OPENAI_APPS_CHALLENGE in .env)."""
+    import os
+    from django.http import HttpResponse
+
+    token = os.environ.get("OPENAI_APPS_CHALLENGE", "")
+    if not token:
+        raise Http404
+    return HttpResponse(token, content_type="text/plain")
