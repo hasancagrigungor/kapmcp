@@ -1,0 +1,27 @@
+/* Single-colour, GitHub-like, no hover effects. */
+:root { --fg: #1f2328; --muted: #59636e; --border: #d1d9e0; --bg: #ffffff; --code: #f6f8fa; --link: #0969da; }
+* { box-sizing: border-box; }
+html { font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); }
+body { margin: 0; }
+header { border-bottom: 1px solid var(--border); }
+nav, main, footer { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+nav { display: flex; gap: 20px; height: 52px; align-items: center; }
+nav a { color: var(--fg); text-decoration: none; }
+nav .brand { font-weight: 600; }
+main { padding: 24px 16px 48px; }
+footer { border-top: 1px solid var(--border); padding: 16px; color: var(--muted); font-size: 13px; }
+h1 { font-size: 26px; margin: 0 0 8px; font-weight: 600; }
+h2 { font-size: 19px; margin: 32px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); font-weight: 600; }
+h3 { font-size: 15px; margin: 20px 0 6px; font-weight: 600; }
+p, ul { margin: 8px 0; }
+.lead { color: var(--muted); }
+a { color: var(--link); text-decoration: none; }
+code { font: 13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--code); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--code); border: 1px solid var(--border); border-radius: 6px; padding: 12px; overflow-x: auto; margin: 8px 0; font-size: 13px; line-height: 1.45; }
+pre code { background: none; padding: 0; }
+pre.desc { white-space: pre-wrap; font-family: inherit; font-size: 15px; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 14px; }
+th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background: var(--code); font-weight: 600; }
+small { color: var(--muted); }
+em { color: var(--muted); font-style: normal; }

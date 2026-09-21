@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>kap-mcp</h1>
+<p class="lead">Borsa İstanbul için bir <a href="https://modelcontextprotocol.io">MCP</a> sunucusu. Resmi KAP bildirimlerini, şirket profillerini, ek dosyaları ve Yahoo Finance piyasa/finansal verisini yapılandırılmış JSON olarak sunar. Yorum yapmaz, tavsiye vermez, grafik çizmez — bunlar bağlandığınız asistanın işidir.</p>
+
+<h2>Endpoint</h2>
+<pre><code>{{ mcp_url }}</code></pre>
+<p>Streamable HTTP, kimlik doğrulama yok, dakikada IP başına 120 istek. Tüm araçlar salt-okunur.</p>
+
+<h2>Bağlan</h2>
+<h3>Claude Code</h3>
+<pre><code>claude mcp add --transport http kap {{ mcp_url }}</code></pre>
+<h3>Claude (web / masaüstü)</h3>
+<p>Settings → Connectors → <em>Add custom connector</em> → URL: <code>{{ mcp_url }}</code></p>
+<h3>ChatGPT</h3>
+<p>Settings → Connectors → Developer mode → <em>Create</em> → MCP server URL: <code>{{ mcp_url }}</code>, Authentication: <em>No authentication</em></p>
+<h3>Cursor / diğer istemciler</h3>
+<pre><code>{
+  "mcpServers": {
+    "kap": { "url": "{{ mcp_url }}" }
+  }
+}</code></pre>
+<h3>Claude Code plugin</h3>
+<pre><code>/plugin marketplace add hasancagrigungor/kapmcp
+/plugin install kap@kap-mcp</code></pre>
+<h3>Yerel kurulum</h3>
+<pre><code>pip install kap-mcp-server
+KAP_API_KEY=... kap-mcp            # stdio</code></pre>
+
+<h2>Ne yapar, ne yapmaz</h2>
+<table>
+<tr><th>Yapar</th><th>Yapmaz</th></tr>
+<tr>
+<td>veri çeker, normalize eder, filtreler, sayfalar; oran / büyüme / karşılaştırma hesaplar; her sonuçta kaynak URL verir; PDF eklerden metin çıkarır</td>
+<td>“hisse alınır mı” demez, sıralama yapmaz, haber yorumlamaz, fiyat hedefi vermez, PNG/SVG grafik üretmez, rapor yazmaz</td>
+</tr>
+</table>
+
+<h2>Kaynaklar</h2>
+<ul>
+<li><strong>KAP</strong> — MKK Veri Yayın Kanalı (resmi REST API). Bildirim listesi/detayı, XBRL finansal tablolar, ekler, şirket ve fon sicili, bloklanmış bildirimler, hak kullanım durumları.{% if kap_env == "test" %} <em>Şu an MKK test ortamı (2023 sonu anlık görüntüsü); üretim erişimi IP yetkilendirmesi bekliyor.</em>{% endif %}</li>
+<li><strong>Yahoo Finance</strong> — fiyat, geçmiş, temel veriler, standart finansal tablolar, analist tahminleri, haber. BIST kodları otomatik <code>.IS</code> alır.</li>
+</ul>
+
+<h2>Araçlar ({{ tool_count }})</h2>
+{% for g in groups %}
+<h3>{{ g.label }}</h3>
+<table>
+{% for t in g.tools %}
+<tr><td><a href="/tools/{{ t.name }}/"><code>{{ t.name }}</code></a></td><td>{{ t.summary }}</td></tr>
+{% endfor %}
+</table>
+{% endfor %}
+
+<h2>Örnek akışlar</h2>
+<table>
+<tr><td>THYAO'nun son 3 aylık açıklamaları</td><td><code>search_disclosures(tickers=["THYAO"], start_date="…", include_details=true)</code></td></tr>
+<tr><td>Sözleşme açıklamaları</td><td><code>search_disclosures(tickers=["ASELS"], query="sözleşme", query_scope="content")</code></td></tr>
+<tr><td>Resmi bilançodan net kâr</td><td><code>get_financials(disclosure_id=…)</code> → <code>get_financial_ratios(disclosure_id=…)</code></td></tr>
+<tr><td>THYAO vs PGSUS</td><td><code>compare_financials(tickers=["THYAO","PGSUS"], metrics=["revenue","net_margin","roe"])</code></td></tr>
+<tr><td>Ekteki rapor kapasite hakkında ne diyor</td><td><code>search_documents(disclosure_id=…, query="kapasite")</code></td></tr>
+<tr><td>Bildirimden sonra hisse ne yaptı</td><td><code>get_price_reaction(disclosure_id=…)</code></td></tr>
+<tr><td>İzleme</td><td><code>search_disclosures(since_id=…, order="asc")</code></td></tr>
+</table>
+
+<h2>Sınırlar</h2>
+<ul>
+<li>KAP liste servisi yalnızca index ile sayfalar (50/çağrı). Tarih ve anahtar kelime sorguları pencere tarar; yanıt <code>scan_complete</code>, <code>pages_scanned</code>, <code>next_cursor</code> döner.</li>
+<li>Liste kaydındaki başlık gönderen adıdır; konu araması şablon kodu (<code>templates</code>) veya <code>query_scope="content"</code> ile yapılır.</li>
+<li>Finansal zaman serisi Yahoo'dan gelir (bazı şirketler USD raporlar, <code>currency</code> döner). Resmi KAP filing'i tek rapor bazında birebir parse edilir.</li>
+<li>Kurumsal aksiyon tutarları KAP gövdesinden ayrıştırılmaz; bildirim linki döner.</li>
+</ul>
+<p>Sürüm {{ version }}.</p>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Araçlar — kap-mcp{% endblock %}
+{% block content %}
+<h1>Araçlar ({{ tool_count }})</h1>
+<p>Tümü salt-okunur. Girdi şemaları tiplidir; çıktı JSON'dur ve <code>source</code> / <code>source_url</code> içerir.</p>
+{% for g in groups %}
+<h2>{{ g.label }}</h2>
+<table>
+{% for t in g.tools %}
+<tr><td><a href="/tools/{{ t.name }}/"><code>{{ t.name }}</code></a></td><td>{{ t.title }}</td><td>{{ t.summary }}</td></tr>
+{% endfor %}
+</table>
+{% endfor %}
+{% endblock %}

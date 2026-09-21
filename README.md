@@ -94,6 +94,17 @@ MIT lisansı. Geliştirici: Çağrı Güngör. [Kaynak kod](https://github.com/h
 
 ---
 
+### Barındırılan sunucu ve Claude plugin
+
+Kurulum gerektirmeyen uç nokta: `https://kapmcp.cagrigungor.com/mcp` (Streamable HTTP, anahtar gerekmez).
+
+```bash
+claude mcp add --transport http kap https://kapmcp.cagrigungor.com/mcp
+# veya Claude Code plugin olarak (araçlar + kullanım rehberi skill'i):
+/plugin marketplace add hasancagrigungor/kapmcp
+/plugin install kap@kap-mcp
+```
+
 ## English
 
 
@@ -105,6 +116,26 @@ and news. Works with compatible MCP clients over stdio or Streamable HTTP.
 paginates, computes ratios/growth and returns structured JSON with `source` / `source_url` on every result. It never
 interprets, ranks, recommends, forecasts or draws charts — that is the calling agent's job. There are no
 `analyze_*` / `should_buy` / `draw_chart` tools by design.
+
+## Hosted endpoint
+
+```
+https://kapmcp.cagrigungor.com/mcp
+```
+
+Streamable HTTP, no auth, 120 requests/min per IP. The site at <https://kapmcp.cagrigungor.com> documents every tool
+from the live registry (`/tools/`) and shows source health (`/status/`).
+
+```bash
+claude mcp add --transport http kap https://kapmcp.cagrigungor.com/mcp
+```
+
+Claude Code plugin (remote server + a usage skill that tells the model which tool to reach for):
+
+```bash
+/plugin marketplace add hasancagrigungor/kapmcp
+/plugin install kap@kap-mcp
+```
 
 ## Install
 
@@ -211,6 +242,21 @@ All tools are read-only (`readOnlyHint`), have titles, typed input schemas with 
 Designed for remote deployment: no file-system writes, no shell, no arbitrary URL fetching. Attachments are fetched only
 by KAP-issued id through the authenticated client, size-capped (40 MB) and processed in memory. User input never builds
 URL paths unchecked. Every result is size-bounded; every scan is page-bounded.
+
+## Web site + hosted MCP (Django)
+
+`web/` is a tiny Django project (no database) that renders the tool catalogue from the MCP server's own registry and
+serves the MCP endpoint in the same ASGI process (`web/kapweb/asgi.py`: Starlette → `/mcp` with an in-process per-IP
+rate limit, everything else → Django). Run locally:
+
+```bash
+uv pip install -e ".[web]"
+cd web && DJANGO_ALLOWED_HOSTS=localhost uvicorn kapweb.asgi:application --port 8000
+```
+
+Deployment (no Docker): `deploy/deploy.sh` rsyncs the source to a CloudPanel Python site, builds a venv, collects
+static files and installs `deploy/kapmcp.service` (uvicorn on 127.0.0.1:8194 behind the panel's nginx vhost).
+Configuration lives in the site's `.env` (never in the repo).
 
 ## Development
 

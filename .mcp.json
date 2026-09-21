@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "kap": {
+      "type": "http",
+      "url": "https://kapmcp.cagrigungor.com/mcp"
+    }
+  }
+}

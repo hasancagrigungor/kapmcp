@@ -18,6 +18,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "anyio>=4", "respx>=0.21"]
+web = ["django>=5.1", "uvicorn[standard]>=0.30", "whitenoise>=6.6"]
 
 [project.urls]
 Homepage = "https://github.com/hasancagrigungor/kapmcp"

@@ -10,3 +10,5 @@ build/
 !.env.example
 .pypirc
 .DS_Store
+web/staticfiles/
+.idea/

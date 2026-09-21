@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ tool.name }} — kap-mcp{% endblock %}
+{% block content %}
+<p><a href="/tools/">← Araçlar</a></p>
+<h1><code>{{ tool.name }}</code></h1>
+<p class="lead">{{ tool.title }}{% if tool.read_only %} · salt-okunur{% endif %}</p>
+<pre class="desc">{{ tool.description }}</pre>
+
+<h2>Parametreler</h2>
+{% if tool.params %}
+<table>
+<tr><th>ad</th><th>tip</th><th>zorunlu</th><th>varsayılan</th><th>açıklama</th></tr>
+{% for p in tool.params %}
+<tr>
+<td><code>{{ p.name }}</code></td>
+<td><code>{{ p.type }}</code>{% if p.constraints %}<br><small>{{ p.constraints }}</small>{% endif %}</td>
+<td>{% if p.required %}evet{% else %}—{% endif %}</td>
+<td>{% if p.default %}<code>{{ p.default }}</code>{% else %}—{% endif %}</td>
+<td>{{ p.description }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>Parametre yok.</p>
+{% endif %}
+
+<h2>Girdi şeması</h2>
+<pre><code>{{ tool.input_schema }}</code></pre>
+{% if tool.output_schema %}
+<h2>Çıktı şeması</h2>
+<pre><code>{{ tool.output_schema }}</code></pre>
+{% endif %}
+{% endblock %}

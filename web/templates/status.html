@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Durum — kap-mcp{% endblock %}
+{% block content %}
+<h1>Durum</h1>
+<table>
+<tr><td>Sürüm</td><td>{{ s.version }}</td></tr>
+<tr><td>KAP</td><td>{% if s.kap_ok %}erişilebilir ({{ s.kap_environment }}), son bildirim id {{ s.kap_last_disclosure_id }}{% else %}erişilemiyor — {{ s.kap_error }}{% endif %}</td></tr>
+<tr><td>Yahoo Finance</td><td>{% if s.yahoo_ok %}erişilebilir, BIST 100 = {{ s.xu100 }}{% else %}erişilemiyor — {{ s.yahoo_error }}{% endif %}</td></tr>
+<tr><td>MCP endpoint</td><td><code>{{ mcp_url }}</code></td></tr>
+</table>
+<p>JSON: <a href="/status/?format=json">/status/?format=json</a> · sağlık: <a href="/healthz">/healthz</a></p>
+{% endblock %}

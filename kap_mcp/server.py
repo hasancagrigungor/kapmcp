@@ -91,13 +91,18 @@ async def get_client() -> KAPClient:
     return _client
 
 
+async def shutdown() -> None:
+    """Close the shared KAP client (call once at process exit)."""
+    global _client
+    if _client is not None:
+        await _client.aclose()
+        _client = None
+
+
 @asynccontextmanager
 async def _lifespan(_server: MCPServer) -> AsyncIterator[dict[str, Any]]:
-    try:
-        yield {}
-    finally:
-        if _client is not None:
-            await _client.aclose()
+    # Runs once per MCP session; the KAP client is process-wide, so it is closed in shutdown(), not here.
+    yield {}
 
 
 mcp = MCPServer(
@@ -967,12 +972,16 @@ def main(argv: Optional[list[str]] = None) -> None:
     if not settings.kap_configured:
         log.warning("KAP_API_KEY is not set; KAP tools will report 'not configured' (Yahoo tools still work)")
 
-    if args.transport == "stdio":
-        mcp.run("stdio")
-    elif args.transport == "streamable-http":
-        mcp.run("streamable-http", host=args.host, port=args.port, streamable_http_path=args.path, stateless_http=args.stateless)
-    else:
-        mcp.run("sse", host=args.host, port=args.port)
+    try:
+        if args.transport == "stdio":
+            mcp.run("stdio")
+            return
+        if args.transport == "streamable-http":
+            mcp.run("streamable-http", host=args.host, port=args.port, streamable_http_path=args.path, stateless_http=args.stateless)
+        else:
+            mcp.run("sse", host=args.host, port=args.port)
+    finally:
+        asyncio.run(shutdown())
 
 
 if __name__ == "__main__":

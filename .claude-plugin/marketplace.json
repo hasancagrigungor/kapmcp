@@ -1,0 +1,17 @@
+{
+  "name": "kap-mcp",
+  "owner": {
+    "name": "Çağrı Güngör",
+    "url": "https://github.com/hasancagrigungor"
+  },
+  "plugins": [
+    {
+      "name": "kap",
+      "description": "Official KAP disclosures, company profiles, XBRL financials, attachments and Yahoo Finance data for Borsa İstanbul.",
+      "source": "./"
+    }
+  ],
+  "metadata": {
+    "description": "Borsa İstanbul data tools: official KAP disclosures and Yahoo Finance market data as MCP."
+  }
+}
