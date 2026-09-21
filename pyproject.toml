@@ -1,5 +1,5 @@
 [project]
-name = "kapmcp"
+name = "kap-mcp-server"
 version = "0.2.0"
 description = "MCP server for Borsa İstanbul: KAP disclosures + Yahoo Finance market data and news"
 readme = "README.md"

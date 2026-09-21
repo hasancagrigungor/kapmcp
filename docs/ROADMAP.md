@@ -119,7 +119,7 @@ kap-mcp (monorepo, tek pip paketi, extras ile)
 
 | Faz | Kapsam | Çıktı | Süre |
 |---|---|---|---|
-| **0 — Eklenti-hazır temel** | E1: tüm araçlara `title`, Pydantic çıktı modelleri, `instructions` kısaltma; araç adlarını dondur (v1 sözleşmesi); `core/services/mcp` ayrımı; `cache.py` Protocol | v0.2, PyPI `kapmcp` | 1 hafta |
+| **0 — Eklenti-hazır temel** | E1: tüm araçlara `title`, Pydantic çıktı modelleri, `instructions` kısaltma; araç adlarını dondur (v1 sözleşmesi); `core/services/mcp` ayrımı; `cache.py` Protocol | v0.2, PyPI `kap-mcp-server` | 1 hafta |
 | **1 — Veri derinliği** | E3 teknik analiz, E6 TCMB kur, E8 ortaklık yapısı, E5 TEFAS, E7 Türkçe haber (kaynak kararı) | v0.3 | 2 hafta |
 | **2 — Uzak sunucu** | Streamable HTTP dağıtımı (Fly.io/Railway/Hetzner + Redis), anonim + rate limit, `stateless_http`, OpenTelemetry, `/healthz`; MCP Inspector test matrisi; gizlilik politikası | `mcp.kap…/mcp` | 1–2 hafta |
 | **3 — Django** | Model+arşiv toplayıcı, REST, 5 sayfa, screener önhesabı (E4, E9), watchlist/uyarı (E13); `/mcp` aynı ASGI'de | v0.5, canlı site | 4 hafta |

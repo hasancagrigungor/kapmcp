@@ -11,7 +11,7 @@
 Python 3.10 veya üzeri gerekir:
 
 ```bash
-pip install kapmcp
+pip install kap-mcp-server
 kapmcp
 ```
 
@@ -109,7 +109,7 @@ interprets, ranks, recommends, forecasts or draws charts — that is the calling
 ## Install
 
 ```bash
-pip install kapmcp
+pip install kap-mcp-server
 kap-mcp                      # stdio
 kap-mcp --transport streamable-http --port 8000 --stateless   # remote: http://host:8000/mcp
 ```
