@@ -99,6 +99,7 @@ MIT lisansı. Geliştirici: Çağrı Güngör. [Kaynak kod](https://github.com/h
 ### Barındırılan sunucu ve Claude plugin
 
 Kurulum gerektirmeyen uç nokta: `https://kapmcp.cagrigungor.com/mcp` (Streamable HTTP, anahtar gerekmez).
+Kendi MKK anahtarınız varsa `X-KAP-API-KEY` / `X-KAP-API-SECRET` / `X-KAP-TEST-MODE` header'larıyla gönderin; plugin kurulumda bunları isteğe bağlı olarak sorar ve istekler sizin anahtarınızla yapılır.
 
 ```bash
 claude mcp add --transport http kap https://kapmcp.cagrigungor.com/mcp
@@ -129,6 +130,16 @@ https://kapmcp.cagrigungor.com/mcp
 
 Streamable HTTP, no auth, 120 requests/min per IP. The site at <https://kapmcp.cagrigungor.com> documents every tool
 from the live registry (`/tools/`) and shows source health (`/status/`).
+
+**Bring your own KAP key (optional).** Send `X-KAP-API-KEY` (plus `X-KAP-API-SECRET` and `X-KAP-TEST-MODE: 1` for the
+MKK test gateway) and the request is served with *your* MKK credentials instead of the shared server key. The Claude
+Code plugin asks for these at install time (`userConfig`) and forwards them as headers; other clients can set headers
+in their MCP config:
+
+```json
+{ "mcpServers": { "kap": { "type": "http", "url": "https://kapmcp.cagrigungor.com/mcp",
+  "headers": { "X-KAP-API-KEY": "…", "X-KAP-API-SECRET": "…", "X-KAP-TEST-MODE": "1" } } } }
+```
 
 ```bash
 claude mcp add --transport http kap https://kapmcp.cagrigungor.com/mcp

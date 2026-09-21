@@ -344,3 +344,29 @@ async def test_kap_tools_report_missing_key(monkeypatch):
         assert q["items"][0]["lastPrice"] == 280.0
         _, ca = await call(c, "get_corporate_actions", ticker="THYAO")
         assert "KAP_API_KEY" in ca["kap_error"] and ca["count"] >= 1
+
+
+async def test_caller_credentials_override_server_key(monkeypatch):
+    """Requests carrying X-KAP-API-KEY are served with the caller's key even when the server has none."""
+    monkeypatch.delenv("KAP_API_KEY", raising=False)
+    server.reload_settings()
+    server.set_client(None)
+    with respx.mock(base_url="https://apigwdev.mkk.com.tr", assert_all_called=False) as mock:
+        last = mock.get("/api/vyk/lastDisclosureIndex").respond(json={"lastDisclosureIndex": 42})
+        creds = server.credentials_from_headers({"X-KAP-API-KEY": "userkey", "X-KAP-Api-Secret": "s", "x-kap-test-mode": "1"})
+        assert creds == {"api_key": "userkey", "api_secret": "s", "test_mode": True}
+        assert server.credentials_from_headers({"Accept": "*/*"}) is None
+        token = server.request_credentials.set(creds)
+        try:
+            async with Client(server.mcp) as c:
+                res = await c.call_tool("kap_status")
+                d = res.structured_content
+                assert d["using_caller_credentials"] and d["kap_reachable"] and d["last_disclosure_id"] == 42
+        finally:
+            server.request_credentials.reset(token)
+        assert last.calls.last.request.headers["Authorization"].startswith("Basic ")
+        # Without the header the server key is still absent -> clean error
+        async with Client(server.mcp) as c:
+            res = await c.call_tool("search_disclosures")
+            assert res.is_error and "KAP_API_KEY" in res.content[0].text
+    await server.shutdown()

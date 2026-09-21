@@ -46,8 +46,12 @@ class RateLimited:
 
 
 async def rate_limited(app, scope, receive, send):
+    token = None
     if scope["type"] == "http":
         headers = dict(scope.get("headers") or [])
+        # Caller-supplied MKK credentials (plugin userConfig / custom headers) override the server key for this request.
+        creds = kap_server.credentials_from_headers({k.decode(): v.decode(errors="ignore") for k, v in headers.items()})
+        token = kap_server.request_credentials.set(creds)
         ip = (headers.get(b"cf-connecting-ip") or headers.get(b"x-forwarded-for") or b"").decode().split(",")[0].strip() or (scope.get("client") or ("?",))[0]
         now = time.monotonic()
         q = _hits[ip]
@@ -58,7 +62,11 @@ async def rate_limited(app, scope, receive, send):
             await resp(scope, receive, send)
             return
         q.append(now)
-    await app(scope, receive, send)
+    try:
+        await app(scope, receive, send)
+    finally:
+        if token is not None:
+            kap_server.request_credentials.reset(token)
 
 
 @contextlib.asynccontextmanager

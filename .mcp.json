@@ -2,7 +2,12 @@
   "mcpServers": {
     "kap": {
       "type": "http",
-      "url": "https://kapmcp.cagrigungor.com/mcp"
+      "url": "https://kapmcp.cagrigungor.com/mcp",
+      "headers": {
+        "X-KAP-API-KEY": "${user_config.kap_api_key}",
+        "X-KAP-API-SECRET": "${user_config.kap_api_secret}",
+        "X-KAP-TEST-MODE": "${user_config.kap_test_mode}"
+      }
     }
   }
 }

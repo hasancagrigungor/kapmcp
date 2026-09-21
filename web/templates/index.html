@@ -8,6 +8,7 @@
 <h2>Endpoint</h2>
 <pre><code>{{ mcp_url }}</code></pre>
 <p>Streamable HTTP, kimlik doğrulama yok, dakikada IP başına 120 istek. Tüm araçlar salt-okunur.</p>
+<p><strong>Kendi KAP anahtarınızla:</strong> isteğe <code>X-KAP-API-KEY</code> (test ortamı için ayrıca <code>X-KAP-API-SECRET</code> ve <code>X-KAP-TEST-MODE: 1</code>) header'larını ekleyin; istekler sunucunun ortak anahtarı yerine sizin MKK anahtarınızla yapılır. Claude Code plugin'i bunları kurulumda isteğe bağlı sorar.</p>
 
 <h2>Bağlan</h2>
 <h3>Claude Code</h3>
@@ -19,7 +20,11 @@
 <h3>Cursor / diğer istemciler</h3>
 <pre><code>{
   "mcpServers": {
-    "kap": { "url": "{{ mcp_url }}" }
+    "kap": {
+      "type": "http",
+      "url": "{{ mcp_url }}",
+      "headers": { "X-KAP-API-KEY": "isteğe bağlı" }
+    }
   }
 }</code></pre>
 <h3>Claude Code plugin</h3>

@@ -65,6 +65,24 @@ settings: Settings = load_settings()
 _client: Optional[KAPClient] = None
 _client_lock = asyncio.Lock()
 
+# Per-request credentials (set by the HTTP layer from X-KAP-API-KEY headers). When present, the
+# request is served with the caller's own MKK key instead of the server's; clients are cached per key.
+import contextvars
+
+request_credentials: contextvars.ContextVar[Optional[dict[str, Any]]] = contextvars.ContextVar("kap_request_credentials", default=None)
+_user_clients: dict[str, KAPClient] = {}
+_MAX_USER_CLIENTS = 200
+
+
+def credentials_from_headers(headers: dict[str, str]) -> Optional[dict[str, Any]]:
+    """Map incoming HTTP headers to credentials; None when no key header is present."""
+    h = {k.lower(): v for k, v in headers.items()}
+    key = (h.get("x-kap-api-key") or "").strip()
+    if not key:
+        return None
+    return {"api_key": key, "api_secret": (h.get("x-kap-api-secret") or "").strip() or None,
+            "test_mode": (h.get("x-kap-test-mode") or "").strip().lower() in ("1", "true", "yes")}
+
 
 def set_client(client: Optional[KAPClient]) -> None:
     """Inject a client (tests)."""
@@ -79,6 +97,19 @@ def reload_settings() -> None:
 
 async def get_client() -> KAPClient:
     global _client
+    creds = request_credentials.get()
+    if creds:
+        ck = f"{creds['api_key']}|{creds['api_secret'] or ''}|{int(creds['test_mode'])}"
+        client = _user_clients.get(ck)
+        if client is None:
+            if len(_user_clients) >= _MAX_USER_CLIENTS:
+                old_key, old = next(iter(_user_clients.items()))
+                _user_clients.pop(old_key, None)
+                await old.aclose()
+            client = KAPClient(api_key=creds["api_key"], api_secret=creds["api_secret"], test_mode=creds["test_mode"],
+                               timeout=settings.kap_timeout, cache_ttl=settings.kap_cache_ttl, max_concurrency=settings.kap_max_concurrency)
+            _user_clients[ck] = client
+        return client
     if _client is None:
         async with _client_lock:
             if _client is None:
@@ -92,11 +123,14 @@ async def get_client() -> KAPClient:
 
 
 async def shutdown() -> None:
-    """Close the shared KAP client (call once at process exit)."""
+    """Close the shared and per-user KAP clients (call once at process exit)."""
     global _client
     if _client is not None:
         await _client.aclose()
         _client = None
+    for c in list(_user_clients.values()):
+        await c.aclose()
+    _user_clients.clear()
 
 
 @asynccontextmanager
@@ -220,11 +254,13 @@ async def get_reference_codes() -> dict[str, dict[str, str]]:
 async def kap_status() -> dict[str, Any]:
     """Configuration and connectivity check. Call first when other tools fail to tell a
     configuration problem (missing key, IP whitelist) from a data problem."""
-    info: dict[str, Any] = {"version": __version__, "kap_configured": settings.kap_configured,
+    own = request_credentials.get() is not None
+    info: dict[str, Any] = {"version": __version__, "kap_configured": settings.kap_configured or own,
+                            "using_caller_credentials": own,
                             "kap_environment": "test" if settings.kap_test_mode else "production",
                             "yahoo_available": True, "limits": {"max_scan_pages": settings.max_scan_pages,
                                                                 "max_result_chars": settings.max_result_chars}}
-    if not settings.kap_configured and _client is None:
+    if not settings.kap_configured and _client is None and not own:
         info["kap_reachable"] = False
         info["kap_error"] = "KAP_API_KEY not set"
     else:

@@ -20,5 +20,27 @@
     "financial statements",
     "yahoo finance"
   ],
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "userConfig": {
+    "kap_api_key": {
+      "type": "string",
+      "title": "KAP API key (optional)",
+      "description": "Your own MKK/KAP data-distribution API key. Leave empty to use the hosted server's shared key.",
+      "sensitive": true,
+      "required": false
+    },
+    "kap_api_secret": {
+      "type": "string",
+      "title": "KAP API secret (optional)",
+      "description": "Only for the MKK test gateway.",
+      "sensitive": true,
+      "required": false
+    },
+    "kap_test_mode": {
+      "type": "string",
+      "title": "KAP test gateway (optional)",
+      "description": "Set to 1 to use apigwdev.mkk.com.tr with your key.",
+      "required": false
+    }
+  }
 }
