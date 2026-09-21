@@ -1,13 +1,24 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "kap",
-  "displayName": "KAP — Borsa İstanbul disclosures & market data",
   "version": "0.2.0",
   "description": "Official KAP (Kamuyu Aydınlatma Platformu) disclosures, company profiles, XBRL financial statements, PDF attachments and Yahoo Finance market data for Borsa İstanbul — as structured, sourced MCP tools. No analysis or recommendations; the model does that.",
-  "author": { "name": "Çağrı Güngör", "url": "https://github.com/hasancagrigungor" },
+  "author": {
+    "name": "Çağrı Güngör",
+    "url": "https://github.com/hasancagrigungor"
+  },
   "homepage": "https://kapmcp.cagrigungor.com",
   "repository": "https://github.com/hasancagrigungor/kapmcp",
   "license": "MIT",
-  "keywords": ["borsa istanbul", "bist", "kap", "turkey", "stocks", "finance", "disclosures", "financial statements", "yahoo finance"],
+  "keywords": [
+    "borsa istanbul",
+    "bist",
+    "kap",
+    "turkey",
+    "stocks",
+    "finance",
+    "disclosures",
+    "financial statements",
+    "yahoo finance"
+  ],
   "mcpServers": "./.mcp.json"
 }
