@@ -8,13 +8,14 @@
 <h2>Endpoint</h2>
 <pre><code>{{ mcp_url }}</code></pre>
 <p>Streamable HTTP, kimlik doğrulama yok, dakikada IP başına 120 istek. Tüm araçlar salt-okunur.</p>
-<p><strong>Kendi KAP anahtarınızla:</strong> isteğe <code>X-KAP-API-KEY</code> (test ortamı için ayrıca <code>X-KAP-API-SECRET</code> ve <code>X-KAP-TEST-MODE: 1</code>) header'larını ekleyin; istekler sunucunun ortak anahtarı yerine sizin MKK anahtarınızla yapılır. Claude Code plugin'i bunları kurulumda isteğe bağlı sorar.</p>
+<p><strong>Kendi KAP anahtarınızla (OAuth):</strong> claude.ai Connectors, ChatGPT veya OAuth destekleyen herhangi bir istemcide <code>{{ mcp_url }}/auth</code> adresini ekleyin; açılan onay sayfasına MKK anahtarınızı girersiniz (MKK'da doğrulanır, şifreli saklanır, yalnızca sizin isteklerinizde kullanılır). Bağlantıyı kaldırınca erişim biter.</p>
+<p><strong>Kendi KAP anahtarınızla (header):</strong> isteğe <code>X-KAP-API-KEY</code> (test ortamı için ayrıca <code>X-KAP-API-SECRET</code> ve <code>X-KAP-TEST-MODE: 1</code>) header'larını ekleyin; istekler sunucunun ortak anahtarı yerine sizin MKK anahtarınızla yapılır. Claude Code plugin'i bunları kurulumda isteğe bağlı sorar.</p>
 
 <h2>Bağlan</h2>
 <h3>Claude Code</h3>
 <pre><code>claude mcp add --transport http kap {{ mcp_url }}</code></pre>
 <h3>Claude (web / masaüstü)</h3>
-<p>Settings → Connectors → <em>Add custom connector</em> → URL: <code>{{ mcp_url }}</code></p>
+<p>Settings → Connectors → <em>Add custom connector</em> → URL: <code>{{ mcp_url }}</code> (ortak anahtar) veya <code>{{ mcp_url }}/auth</code> (kendi anahtarınız, OAuth ile)</p>
 <h3>ChatGPT</h3>
 <p>Settings → Connectors → Developer mode → <em>Create</em> → MCP server URL: <code>{{ mcp_url }}</code>, Authentication: <em>No authentication</em></p>
 <h3>Cursor / diğer istemciler</h3>

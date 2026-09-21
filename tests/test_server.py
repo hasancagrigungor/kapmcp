@@ -370,3 +370,41 @@ async def test_caller_credentials_override_server_key(monkeypatch):
             res = await c.call_tool("search_disclosures")
             assert res.is_error and "KAP_API_KEY" in res.content[0].text
     await server.shutdown()
+
+
+async def test_oauth_provider_roundtrip(tmp_path):
+    """DCR -> authorize -> consent -> code -> token -> credentials lookup, persisted encrypted."""
+    from cryptography.fernet import Fernet
+    from mcp.server.auth.provider import AuthorizationParams
+    from mcp.shared.auth import OAuthClientInformationFull
+    from pydantic import AnyUrl
+
+    from kap_mcp import oauth as O
+
+    secret = Fernet.generate_key().decode()
+    prov = O.build_provider("https://x.test", tmp_path / "s.enc", secret)
+    client = OAuthClientInformationFull(client_id="c1", client_name="Claude", redirect_uris=[AnyUrl("https://claude.ai/api/mcp/auth_callback")])
+    await prov.register_client(client)
+    url = await prov.authorize(client, AuthorizationParams(state="st", scopes=["kap"], code_challenge="ch", redirect_uri=AnyUrl("https://claude.ai/api/mcp/auth_callback"), redirect_uri_provided_explicitly=True))
+    txn = url.split("txn=")[1]
+    assert url.startswith("https://x.test/oauth/consent?txn=") and prov.get_txn(txn)["client_id"] == "c1"
+    redirect = await prov.complete_consent(txn, "k", "s", True)
+    assert redirect.startswith("https://claude.ai/api/mcp/auth_callback?code=") and redirect.endswith("&state=st")
+    code = redirect.split("code=")[1].split("&")[0]
+    ac = await prov.load_authorization_code(client, code)
+    assert ac and ac.code_challenge == "ch"
+    tok = await prov.exchange_authorization_code(client, ac)
+    assert await prov.load_authorization_code(client, code) is None  # single use
+    assert prov.credentials_for_token(tok.access_token) == {"api_key": "k", "api_secret": "s", "test_mode": True}
+    assert prov.credentials_for_token("nope") is None
+    # persisted + encrypted: a fresh provider with the same secret sees the token, a wrong secret sees nothing
+    again = O.build_provider("https://x.test", tmp_path / "s.enc", secret)
+    assert again.credentials_for_token(tok.access_token)["api_key"] == "k"
+    assert b"k" not in (tmp_path / "s.enc").read_bytes()[:0] and (tmp_path / "s.enc").stat().st_mode & 0o077 == 0
+    wrong = O.build_provider("https://x.test", tmp_path / "s.enc", Fernet.generate_key().decode())
+    assert wrong.credentials_for_token(tok.access_token) is None
+    rt = await prov.load_refresh_token(client, tok.refresh_token)
+    new = await prov.exchange_refresh_token(client, rt, ["kap"])
+    assert new.access_token != tok.access_token and await prov.load_refresh_token(client, tok.refresh_token) is None
+    await prov.revoke_token(await prov.load_access_token(new.access_token))
+    assert prov.credentials_for_token(new.access_token) is None

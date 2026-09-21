@@ -7,7 +7,8 @@
 <h2>Türkçe</h2>
 <ul>
 <li><strong>Toplanan veri:</strong> Hesap yok, çerez yok, kayıt yok. Sunucu, hız sınırı için istemci IP adresini bellekte en fazla 60 saniye tutar; nginx erişim günlükleri (IP, zaman, istek yolu) işletim amaçlı 14 gün saklanır.</li>
-<li><strong>Kendi anahtarınız:</strong> <code>X-KAP-API-KEY</code> header'ı ile gönderdiğiniz MKK anahtarı yalnızca o isteği MKK'ya iletmek için kullanılır, bellekte istemci nesnesiyle birlikte tutulur (en fazla 200 anahtar, süreç yeniden başlayınca silinir), diske yazılmaz ve loglanmaz.</li>
+<li><strong>OAuth ile kaydedilen anahtar:</strong> <code>/mcp/auth</code> için onay sayfasına girdiğiniz MKK anahtarı sunucuda Fernet ile şifrelenmiş bir dosyada, size verilen erişim jetonuna bağlı olarak saklanır (jeton 30 gün, yenileme jetonu 180 gün); yalnızca sizin isteklerinizde MKK'ya iletilir, loglanmaz. Bağlantıyı uygulamadan kaldırdığınızda (jeton iptali) veya jeton süresi dolduğunda anahtar silinir. Silme talebi: iletisim@cagrigor.com.</li>
+<li><strong>Header ile gönderilen anahtar:</strong> <code>X-KAP-API-KEY</code> header'ı ile gönderdiğiniz MKK anahtarı yalnızca o isteği MKK'ya iletmek için kullanılır, bellekte istemci nesnesiyle birlikte tutulur (en fazla 200 anahtar, süreç yeniden başlayınca silinir), diske yazılmaz ve loglanmaz.</li>
 <li><strong>Araç girdileri:</strong> Gönderdiğiniz parametreler (hisse kodu, tarih, arama terimi) yalnızca ilgili isteği KAP/MKK ve Yahoo Finance'e iletmek için kullanılır; saklanmaz, üçüncü taraflarla paylaşılmaz, model eğitiminde kullanılmaz.</li>
 <li><strong>Önbellek:</strong> Kamuya açık piyasa ve bildirim verileri performans için kısa süreli (dakikalar–saatler) bellekte önbelleklenir; kişisel veri içermez.</li>
 <li><strong>Üçüncü taraflar:</strong> Veriler MKK Veri Yayın Kanalı (KAP) ve Yahoo Finance'ten alınır; bu servislerin kendi koşulları geçerlidir. KAP'ın KVKK gereği erişime kapattığı bildirimler sunulmaz.</li>
@@ -17,7 +18,8 @@
 <h2>English</h2>
 <ul>
 <li><strong>Data collected:</strong> No accounts, no cookies, no tracking. Client IP addresses are held in memory for up to 60 seconds for rate limiting; nginx access logs (IP, time, path) are retained for 14 days for operations.</li>
-<li><strong>Your own key:</strong> an MKK key sent via <code>X-KAP-API-KEY</code> is used only to perform that request against MKK, kept in memory with its client object (at most 200 keys, cleared on restart), never written to disk or logged.</li>
+<li><strong>Key saved via OAuth:</strong> the MKK key you enter on the consent page for <code>/mcp/auth</code> is stored Fernet-encrypted on the server, bound to your access token (30 days; refresh 180 days), sent only with your own requests and never logged. It is deleted when you disconnect the app (token revocation) or the token expires. Deletion requests: iletisim@cagrigor.com.</li>
+<li><strong>Key sent via header:</strong> an MKK key sent via <code>X-KAP-API-KEY</code> is used only to perform that request against MKK, kept in memory with its client object (at most 200 keys, cleared on restart), never written to disk or logged.</li>
 <li><strong>Tool inputs:</strong> Parameters you send (tickers, dates, search terms) are used only to perform the request against KAP/MKK and Yahoo Finance; they are not stored, shared with third parties, or used for training.</li>
 <li><strong>Caching:</strong> Public market and disclosure data is cached in memory for minutes to hours for performance; it contains no personal data.</li>
 <li><strong>Third parties:</strong> Data is sourced from the MKK Data Distribution Channel (KAP) and Yahoo Finance under their own terms. Disclosures KAP has withdrawn under Turkish data-protection law are not served.</li>

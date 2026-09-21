@@ -99,7 +99,7 @@ MIT lisansı. Geliştirici: Çağrı Güngör. [Kaynak kod](https://github.com/h
 ### Barındırılan sunucu ve Claude plugin
 
 Kurulum gerektirmeyen uç nokta: `https://kapmcp.cagrigungor.com/mcp` (Streamable HTTP, anahtar gerekmez).
-Kendi MKK anahtarınız varsa `X-KAP-API-KEY` / `X-KAP-API-SECRET` / `X-KAP-TEST-MODE` header'larıyla gönderin; plugin kurulumda bunları isteğe bağlı olarak sorar ve istekler sizin anahtarınızla yapılır.
+Kendi MKK anahtarınızla kullanmak için: claude.ai / ChatGPT gibi OAuth destekleyen istemcilerde `https://kapmcp.cagrigungor.com/mcp/auth` adresini ekleyin — açılan onay sayfasına anahtarınızı girersiniz (MKK'da doğrulanır, şifreli saklanır); Claude Code plugin'i ve header destekleyen istemcilerde `X-KAP-API-KEY` / `X-KAP-API-SECRET` / `X-KAP-TEST-MODE` header'ları yeterlidir.
 
 ```bash
 claude mcp add --transport http kap https://kapmcp.cagrigungor.com/mcp
@@ -131,7 +131,14 @@ https://kapmcp.cagrigungor.com/mcp
 Streamable HTTP, no auth, 120 requests/min per IP. The site at <https://kapmcp.cagrigungor.com> documents every tool
 from the live registry (`/tools/`) and shows source health (`/status/`).
 
-**Bring your own KAP key (optional).** Send `X-KAP-API-KEY` (plus `X-KAP-API-SECRET` and `X-KAP-TEST-MODE: 1` for the
+**Bring your own KAP key (optional), two ways.**
+
+1. **OAuth (claude.ai custom connectors, ChatGPT, any OAuth-capable client):** add
+   `https://kapmcp.cagrigungor.com/mcp/auth` instead of `/mcp`. The client discovers the authorization server
+   (`/.well-known/oauth-authorization-server`, dynamic client registration, PKCE), opens a consent page where you type
+   your MKK key, which is validated against MKK and stored encrypted; every request with the issued token then runs
+   with your key. Revoke by removing the connector.
+2. **Headers (Claude Code plugin, Cursor, own code):** send `X-KAP-API-KEY` (plus `X-KAP-API-SECRET` and `X-KAP-TEST-MODE: 1` for the
 MKK test gateway) and the request is served with *your* MKK credentials instead of the shared server key. The Claude
 Code plugin asks for these at install time (`userConfig`) and forwards them as headers; other clients can set headers
 in their MCP config:

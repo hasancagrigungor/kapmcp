@@ -14,11 +14,12 @@ dependencies = [
     "pydantic>=2.5",
     "pypdf>=4.0",
     "yfinance>=0.2.50",
+    "cryptography>=42",
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "anyio>=4", "respx>=0.21"]
-web = ["django>=5.1", "uvicorn[standard]>=0.30", "whitenoise>=6.6"]
+web = ["django>=5.1", "uvicorn[standard]>=0.30", "whitenoise>=6.6", "python-multipart>=0.0.9"]
 
 [project.urls]
 Homepage = "https://github.com/hasancagrigungor/kapmcp"
